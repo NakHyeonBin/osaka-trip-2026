@@ -10,7 +10,7 @@ Static, mobile-first itinerary for 12–14 November 2026. GitHub Pages serves th
 
 ## Local preview
 
-Open `index.html` directly or serve the repository root with any static HTTP server. The map uses Leaflet and CARTO light tiles; when the map CDN or tiles are unavailable, Google Maps links remain available from every stop.
+Open `index.html` directly or serve the repository root with any static HTTP server. The map uses Leaflet and standard OpenStreetMap tiles; when the map library or tiles are unavailable, Google Maps links remain available from every stop.
 
 The map shows a small number of area anchors and connects them with a dashed sequence line. The line is not a road or rail route. Per-leg links open Google Maps walking, transit, or driving directions. Naver Map and Kakao Map search links were removed after checking Osaka searches: both kept the map centered in Korea and returned no matching Osaka business results in the tested browser.
 

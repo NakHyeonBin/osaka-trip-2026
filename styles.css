@@ -9,16 +9,16 @@ main{padding-top:20px;padding-bottom:20px}.card{background:var(--paper);border:1
 /* Restrained, information-first trip UI */
 :root{--bg:#f5f6f8;--paper:#fff;--ink:#17191c;--sub:#69717c;--line:#e7e9ec;--blue:#1769e0;--radius:16px;--shadow:0 1px 3px #1018280a;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo",sans-serif}
 body{font-size:14px;line-height:1.55}
-.hero{min-height:0;padding:22px 0 24px;background:#fff;color:var(--ink);border-bottom:1px solid var(--line)}
-.hero:before{display:none}.hero-art{display:none}.hero-content{max-width:940px}
-.topline{font-size:11px;letter-spacing:.01em;color:#707782;font-weight:600}
-.saved-state{color:#4f5964;border:1px solid var(--line);background:#fff;padding:5px 9px}
-.hero .overline{margin-top:27px;color:#727b86;letter-spacing:0;font-size:12px;font-weight:600}
+.hero{min-height:0;padding:22px 0 24px;background:#142620;color:#fff;border-bottom:1px solid var(--line)}
+.hero:before{display:block;background:linear-gradient(90deg,rgba(12,27,24,.88),rgba(12,27,24,.63) 58%,rgba(12,27,24,.34)),url('https://images.unsplash.com/photo-1759736693469-750a6593ec7f?auto=format&fit=crop&w=1800&q=85') center 52%/cover;opacity:1}.hero-art{display:none}.hero-content{max-width:940px}
+.topline{font-size:11px;letter-spacing:.01em;color:#e4ece8;font-weight:600}
+.saved-state{color:#f1f5f3;border:1px solid #ffffff55;background:#ffffff12;padding:5px 9px}
+.hero .overline{margin-top:27px;color:#d4e0da;letter-spacing:0;font-size:12px;font-weight:600}
 .hero h1{font-size:clamp(30px,6vw,42px);letter-spacing:-.055em;line-height:1.2;margin:5px 0}
-.hero-copy{color:#69717c;font-size:13px}
+.hero-copy{color:#e2e9e5;font-size:13px}
 .trip-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:22px;padding:15px 0 0;border-top:1px solid var(--line)}
-.trip-facts div{padding:0 14px;border:0;border-left:1px solid var(--line)}.trip-facts div:first-child{padding-left:0;border-left:0}
-.trip-facts span{font-size:11px;color:#7a828c}.trip-facts strong{font-size:12px;color:#252a31}
+.trip-facts div{padding:0 14px;border:0;border-left:1px solid #ffffff52}.trip-facts div:first-child{padding-left:0;border-left:0}
+.trip-facts span{font-size:11px;color:#d1ddd7}.trip-facts strong{font-size:12px;color:#fff}
 main{padding-top:16px}.card{border-color:var(--line);border-radius:16px;box-shadow:none;padding:19px}
 .eyebrow{letter-spacing:0;font-size:11px;color:#7b838d;font-weight:600}
 .section-heading h2{font-size:18px;letter-spacing:-.035em}.pill{background:#f4f5f7;color:#515963}

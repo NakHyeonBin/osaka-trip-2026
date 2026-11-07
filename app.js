@@ -125,7 +125,7 @@ function initMap(index){
   if(map&&map.getContainer()!==mapNode){map.remove();maps.delete(index);mapLayerGroups.delete(index);map=null;}
   if(!map){
     map=L.map(`map-${index}`,{scrollWheelZoom:false,zoomControl:true});maps.set(index,map);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/attributions">CARTO</a>',maxZoom:19}).addTo(map);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',maxZoom:19}).addTo(map);
     const coords=day.mapStops.map(s=>[s.lat,s.lng]);
     L.polyline(coords,{color:day.color,weight:3,opacity:.5,dashArray:"5 8"}).addTo(map);
     const markers=day.mapStops.map((s,j)=>{
