@@ -1,190 +1,274 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OSAKA TRIP 2026</title>
+<meta name="theme-color" content="#101f36">
+<title>OSAKA TRAVEL OS · 2026</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
+:root{--bg:#f4f6fa;--ink:#17283e;--muted:#718197;--line:#e5eaf1;--blue:#377dce}
 *{box-sizing:border-box}
-body{margin:0;background:#f3f5f8;color:#203047;font:14px/1.65 system-ui,sans-serif}
-header{background:#14263d;color:white;padding:36px 20px}
-main{max-width:780px;margin:auto;padding:16px}
-h1{font-size:34px;margin:4px 0}
-h2{font-size:22px;margin:5px 0 14px}
-h3{font-size:16px;margin:12px 0}
-small,.muted{color:#788699}
-header small{color:#bbcbdd}
-.card{background:white;padding:20px;border-radius:20px;margin:14px 0;box-shadow:0 3px 16px #15253b0b}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-button{border:0;border-radius:12px;padding:12px 4px;background:white;font-weight:700;color:#526277}
-button.active{background:#172c46;color:white}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 -apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif}
+header{background:linear-gradient(130deg,#10243e,#254c78);color:white;padding:38px 20px 30px}
+.wrap{max-width:850px;margin:auto}
+header h1{font-size:clamp(35px,9vw,54px);letter-spacing:-2px;line-height:1.1;margin:12px 0}
+header p{color:#c8d9ee}
+.eyebrow{font-size:10px;letter-spacing:2px;font-weight:800;color:#aac9e9}
+main{padding:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:24px}
+.stat{background:#ffffff15;border:1px solid #ffffff20;border-radius:14px;padding:12px}
+.stat b{display:block;font-size:17px}
+.stat small{font-size:10px;color:#c3d2e4}
+.card{background:white;border:1px solid var(--line);border-radius:20px;padding:19px;margin:13px 0;box-shadow:0 5px 20px #12233b06}
+.kicker{color:#4380be;font-size:10px;letter-spacing:1.5px;font-weight:800}
+h2{font-size:23px;letter-spacing:-.7px;line-height:1.35;margin:8px 0 12px}
+h3{font-size:15px;margin:5px 0}
+.muted{color:var(--muted);font-size:12px}
+.tabs{position:sticky;top:0;z-index:1000;background:#f4f6faed;backdrop-filter:blur(12px);display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:10px 0}
+.tab{border:1px solid #dce4ee;background:white;border-radius:13px;padding:12px 4px;color:#66778b;font-weight:800}
+.tab.active{background:#172c47;color:white;border-color:#172c47}
 .day{display:none}
 .day.active{display:block}
-.hero{height:170px;width:100%;object-fit:cover;border-radius:13px}
-iframe{width:100%;height:260px;border:0;border-radius:14px}
-.stop{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #edf0f4}
-.num{width:30px;height:30px;flex-shrink:0;border-radius:50%;background:#e8eff8;display:grid;place-items:center;font-weight:800;color:#2865a4}
-.content{flex:1}
-.time{font-size:12px;font-weight:800;color:#718196}
-.move{font-size:12px;color:#748298;margin:5px 0}
-a{color:#246ca8;text-decoration:none}
-.links{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-.links a{border:1px solid #dce3ec;padding:7px 10px;border-radius:10px;font-size:12px}
-.notice{padding:12px;border-radius:12px;background:#f4f6f9;color:#607086;font-size:12px;margin:12px 0}
-.check{display:block;padding:10px 0;border-bottom:1px solid #eee}
-input{accent-color:#428d77}
-footer{text-align:center;padding:25px;color:#8793a1}
+.route{border-left:3px solid #93b7e2;margin:15px 0 10px 12px;padding-left:18px}
+.route div{position:relative;margin:0 0 15px;font-weight:700;font-size:13px}
+.route div:before{content:"";position:absolute;left:-25px;top:6px;width:9px;height:9px;background:white;border:3px solid #6e9dd4;border-radius:50%}
+.route small{display:block;color:#8a98a9;font-weight:400}
+.route.orange{border-color:#efb76f}
+.route.orange div:before{border-color:#e8a04b}
+.route.green{border-color:#79c2a1}
+.route.green div:before{border-color:#44a47e}
+.map{height:300px;border-radius:14px;overflow:hidden;background:#e8edf4;z-index:0}
+.stop{display:grid;grid-template-columns:35px 1fr;gap:10px;padding:16px 0;border-bottom:1px solid var(--line)}
+.num{background:#eaf1f9;color:#2d669f;border-radius:11px;width:30px;height:30px;display:grid;place-items:center;font-weight:800}
+.time{color:#71859b;font-size:11px;font-weight:800}
+.detail{color:#718197;font-size:12px}
+.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.actions a{border:1px solid #dbe4ee;padding:7px 10px;border-radius:10px;color:#2d679f;text-decoration:none;font-size:12px;font-weight:700}
+.note{background:#f4f7fa;padding:10px 12px;border-radius:10px;font-size:12px;color:#62758a;margin-top:9px}
+.warning{background:#fff6e8;border:1px solid #f4dfbc;border-radius:12px;padding:13px;color:#86632f;font-size:12px;margin-top:12px}
+.check{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+input{accent-color:#248f76;width:18px;height:18px}
+.pin{width:26px;height:26px;background:#18314f;color:white;border:2px solid white;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;box-shadow:0 2px 8px #0004}
+footer{text-align:center;color:#8c99a9;padding:25px;font-size:11px}
+@media(min-width:750px){main{padding:22px}.map{height:390px}}
 </style>
 </head>
 <body>
 <header>
-<small>OSAKA · PERSONAL TRAVEL DASHBOARD</small>
-<h1>3 DAYS<br>IN OSAKA.</h1>
-<p>2026.11.12 — 11.14</p>
-<small>난바 · 도톤보리 · 오사카성 · 우메다</small>
+<div class="wrap">
+<div class="eyebrow">YOUR PERSONAL TRAVEL DASHBOARD</div>
+<h1>OSAKA.<br>MADE SIMPLE.</h1>
+<p>2026.11.12 THU — 11.14 SAT<br>난바 · 신사이바시 · 우메다</p>
+<div class="stats">
+<div class="stat"><b>3 DAYS</b><small>2박 3일</small></div>
+<div class="stat"><b>INNN</b><small>공항 픽업</small></div>
+<div class="stat"><b>16:30</b><small>귀국일 공항 목표</small></div>
+</div>
+</div>
 </header>
-<main>
-<div class="card">
-<h3>✈️ 여행 정보</h3>
-<p>11/12 간사이공항 18:30 도착<br>11/14 간사이공항 19:20 출발</p>
-<p>🏨 Henn na Hotel Express Osaka Namba Nipponbashi</p>
-<div class="links">
-<a target="_blank" href="https://www.google.com/maps/search/?api=1&query=Henn+na+Hotel+Express+Osaka+Namba+Nipponbashi">호텔 위치 ↗</a>
-<a target="_blank" href="https://www.nankai.co.jp/en_railway/">난카이 철도 ↗</a>
+<main class="wrap">
+<section class="card">
+<div class="kicker">MASTER ROUTE</div>
+<h2>3일 동선 한눈에 보기</h2>
+<p class="muted">날짜별 이동 순서를 정리했습니다. 아래 탭에서 지도와 세부 일정을 확인하세요.</p>
+<h3>🔵 11월 12일 · 목요일</h3>
+<div class="route">
+<div>✈️ 간사이공항<small>18:30 도착 · 입국 및 수하물</small></div>
+<div>🚘 INNN 픽업 → 닛폰바시 호텔<small>차량 약 50~75분</small></div>
+<div>🥩 야키니쿠 하나미치<small>늦은 저녁 · 영업시간 확인</small></div>
+<div>🌃 도톤보리<small>야경 · 돈키호테</small></div>
 </div>
+<h3>🟠 11월 13일 · 금요일</h3>
+<div class="route orange">
+<div>🍜 이치란 → 난바 쇼핑<small>아침 식사 · 리쿠로 · 유니클로 · 러쉬</small></div>
+<div>🛍️ 휴먼메이드 → 스투시<small>신사이바시 쇼핑</small></div>
+<div>🥘 미즈노<small>오코노미야키 점심</small></div>
+<div>🛍️ LINKS → 그랜드 프런트 → 한큐<small>15:00~17:45 우메다 쇼핑</small></div>
+<div>🌆 우메다 공중정원<small>18:10 야경 · 필수 방문</small></div>
+<div>🍣 스시 바 이니시<small>20:15 전후 저녁 · 예약 확인</small></div>
 </div>
-
-<div class="tabs">
-<button class="active" onclick="show(0)">11.12 목</button>
-<button onclick="show(1)">11.13 금</button>
-<button onclick="show(2)">11.14 토</button>
-</div>
-
-<section class="day active">
-<div class="card">
-<small>DAY 01 · ARRIVAL</small>
-<h2>도착 & 도톤보리</h2>
-<img class="hero" src="https://images.unsplash.com/photo-1590559899731-a382839e5549?w=1000" alt="오사카 야경">
-<h3>오늘의 동선 지도</h3>
-<iframe loading="lazy" src="https://maps.google.com/maps?q=Dotonbori%20Osaka&z=13&output=embed"></iframe>
-<div class="links">
-<a target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Kansai+International+Airport&destination=Henn+na+Hotel+Express+Osaka+Namba+Nipponbashi&travelmode=transit">공항 → 호텔 경로 ↗</a>
-<a target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Henn+na+Hotel+Express+Osaka+Namba+Nipponbashi&destination=Dotonbori+Osaka&travelmode=walking">호텔 → 도톤보리 ↗</a>
-</div>
-<div id="stops1"></div>
-<div class="notice">입국심사 및 열차 대기시간에 따라 도착이 지연될 수 있습니다. 야키니쿠 하나미치의 주문 마감시간은 방문 전 확인이 필요합니다.</div>
+<h3>🟢 11월 14일 · 토요일</h3>
+<div class="route green">
+<div>🍤 덴푸라 마키노<small>11:00 점심</small></div>
+<div>🛍️ 난바 마지막 쇼핑<small>카페 · 기념품</small></div>
+<div>🏨 호텔 짐 수령 → 난카이 난바역<small>14:20~15:00</small></div>
+<div>✈️ 간사이공항<small>16:30까지 도착 · 19:20 출발</small></div>
 </div>
 </section>
 
-<section class="day">
-<div class="card">
-<small>DAY 02 · SIGHTSEEING & SHOPPING</small>
-<h2>오사카성 & 우메다</h2>
-<img class="hero" src="https://images.unsplash.com/photo-1589452271712-64b8a66c7b71?w=1000" alt="오사카 여행">
-<h3>오사카성 · 우메다 동선</h3>
-<iframe loading="lazy" src="https://maps.google.com/maps?q=Osaka%20Castle&z=12&output=embed"></iframe>
-<div class="links">
-<a target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Ichiran+Dotonbori+Annex&destination=Osaka+Castle&travelmode=transit">이치란 → 오사카성 ↗</a>
-<a target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Osaka+Castle&destination=Grand+Front+Osaka&travelmode=transit">오사카성 → 우메다 ↗</a>
-<a target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Grand+Front+Osaka&destination=Sushi+Bar+Enishi+Osaka&travelmode=transit">우메다 → 스시바 ↗</a>
-</div>
-<div id="stops2"></div>
-<h3>🏯 오사카성 관람 가이드</h3>
-<p>관람시간은 <b>09:30~12:00, 총 2시간 30분</b>을 확보했습니다.</p>
-<p>역에서 성까지 이동 및 외관 촬영 약 30~40분, 천수각 내부 전시와 전망 약 60~90분, 공원 산책과 이동에 나머지 시간을 배정합니다.</p>
-<div class="notice">오사카성은 입구와 지하철역 사이 거리가 있고, 입장 대기시간에 따라 관람시간이 늘어날 수 있습니다. 오후 쇼핑 일정을 조정할 수 있도록 여유를 두세요.</div>
-<h3>🛍️ 아웃도어 쇼핑</h3>
-<p>한큐백화점 GREEN AGE · 그랜드 프런트 오사카</p>
-<p>아크테릭스 · 노스페이스 · 몽벨 · 컬럼비아 등 매장 확인</p>
-<div class="links">
-<a target="_blank" href="https://www.google.com/maps/search/?api=1&query=Grand+Front+Osaka">쇼핑몰 지도 ↗</a>
-<a target="_blank" href="https://www.hotpepper.jp/strJ004049435/">스시 엔니시 예약 ↗</a>
-</div>
+<nav class="tabs" id="tabs"></nav>
+<div id="days"></div>
+
+<section class="card">
+<div class="kicker">SHOPPING NOTES</div>
+<h2>우메다 매장 · 면세 체크</h2>
+<p><b>LINKS UMEDA</b><br>Standard Products · GU</p>
+<p><b>그랜드 프런트 남관</b><br>Bshop(DANTON) · PORTER · Onitsuka Tiger · mont-bell</p>
+<p><b>한큐백화점 / 한큐 맨즈</b><br>Vivienne Westwood · 게스트 카드 적용 확인</p>
+<div class="warning">2026년 11월 일본 면세 제도는 출국 확인 후 환급 방식으로 변경됩니다. 5% 게스트 카드의 발급 조건, 브랜드별 할인 적용, 매장별 환급 등록 방법 및 층수는 현장에서 재확인하세요. 환급 대상 물품은 수하물 위탁 전에 세관 확인이 필요할 수 있습니다.</div>
+<div class="actions">
+<a target="_blank" href="https://www.mlit.go.jp/kankocho/tax-free/">일본 관광청 면세 안내 ↗</a>
+<a target="_blank" href="https://www.kansai-airport.or.jp/kr/">간사이공항 한국어 ↗</a>
 </div>
 </section>
 
-<section class="day">
-<div class="card">
-<small>DAY 03 · DEPARTURE</small>
-<h2>덴푸라 & 마지막 쇼핑</h2>
-<h3>난바 · 공항 이동 지도</h3>
-<iframe loading="lazy" src="https://maps.google.com/maps?q=Nankai%20Namba%20Station&z=14&output=embed"></iframe>
-<div class="links">
-<a target="_blank" href="https://www.google.com/maps/dir/?api=1&origin=Nankai+Namba+Station&destination=Kansai+International+Airport&travelmode=transit">난바 → 간사이공항 ↗</a>
-<a target="_blank" href="https://www.google.com/maps/search/?api=1&query=Tempura+Makino+Namba+Sennichimae">덴푸라 마키노 ↗</a>
-</div>
-<div id="stops3"></div>
-<div class="notice">16:30은 공항 도착 목표시간입니다. 열차 지연, 항공사 수하물 마감, 면세 환급 및 보안검색 소요시간을 고려해 실제 출발 열차를 확정하세요.</div>
-</div>
-</section>
-
-<div class="card">
-<h2>출국 체크리스트</h2>
+<section class="card">
+<div class="kicker">CHECKLIST</div>
+<h2>예약 · 출국 준비</h2>
 <div id="checks"></div>
-<p class="muted">체크 상태는 현재 휴대폰에만 저장됩니다.</p>
-</div>
+<p class="muted">체크 상태는 현재 기기에 저장됩니다.</p>
+</section>
+<footer>OSAKA TRAVEL OS · 2026<br>이동시간은 예상치이며 실시간 교통정보가 아닙니다.</footer>
 </main>
-<footer>OSAKA TRIP 2026 · MOBILE GUIDE</footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const plans=[
-[
-["18:30","간사이공항 도착","입국심사 및 수하물 수령 약 60~75분"],
-["19:45","난바로 이동","난카이 철도 및 대기 약 50~65분"],
-["20:45","호텔 체크인","역에서 도보 및 체크인 약 20~30분"],
-["21:15","야키니쿠 하나미치","도보 이동 · 영업시간 확인"],
-["22:30","도톤보리 야경","도보 약 5~15분 · 선택 일정"]
-],
-[
-["07:45","호텔 출발","이치란까지 도보 약 10~20분"],
-["08:00","이치란 도톤보리 별관","아침식사 약 45분"],
-["08:45","오사카성으로 이동","지하철 및 도보 약 40~50분"],
-["09:30","오사카성 관람","2시간 30분 확보 · 12:00 종료"],
-["12:00","우메다로 이동","지하철 및 도보 약 35~50분"],
-["12:50","우메다 쇼핑 및 점심","한큐 · 그랜드 프런트 약 3시간"],
-["16:00","난바로 이동","지하철 및 도보 약 25~40분"],
-["16:40","리쿠로 · 유니클로 · 러쉬","난바 쇼핑 및 간식 약 1시간"],
-["17:40","미즈노 오코노미야키","대기시간에 따라 조정 · 간단히 나눠 먹기"],
-["19:00","Sushi Bar Enishi","저녁 · 예약 별도 진행"]
-],
-[
-["10:00","호텔 체크아웃","짐 보관 가능 여부 확인"],
-["10:15","난바 쇼핑 · 산책","도보 이동"],
-["11:00","덴푸라 마키노","점심 약 60분"],
-["12:00","마지막 쇼핑 · 카페","약 2시간"],
-["14:00","호텔 짐 수령","약 30분"],
-["14:30","난카이 난바역 이동","도보 약 10~20분"],
-["15:00 전후","간사이공항행 열차","실제 열차 시간표 확인"],
-["16:30까지","간사이공항 도착","체크인 · 세관 · 보안검색"],
-["19:20","에어로케이 출발","귀국편"]
-]
-];
-plans.forEach((day,d)=>{
-document.getElementById("stops"+(d+1)).innerHTML=
-day.map((s,i)=>`
-<div class="stop">
-<div class="num">${i+1}</div>
-<div class="content">
+const D=[
+{
+date:"11.12 목",title:"공항 픽업 · 도톤보리",color:"#4d8fd4",
+stops:[
+["18:30","간사이공항 도착","입국심사·수하물 약 60~90분","Kansai International Airport",34.4347,135.244,"INNN 기사 미팅 장소 확인"],
+["20:00","INNN 공항 픽업","전용 차량으로 호텔 이동 약 50~75분","Henn na Hotel Express Osaka Namba Nipponbashi",34.6656,135.5065,"철도 이용 없음 · 도로 정체에 따라 지연 가능"],
+["21:15","야키니쿠 하나미치","호텔에서 도보 약 10~20분","Yakiniku Hanamichi Osaka",34.6685,135.5032,"늦은 입장 및 라스트오더 사전 확인"],
+["22:30","도톤보리 · 돈키호테","도보 약 5~15분","Dotonbori Osaka",34.6687,135.5011,"컨디션에 따라 선택"]
+]},
+{
+date:"11.13 금",title:"신사이바시 · 우메다 · 공중정원",color:"#e7a24b",
+stops:[
+["08:00","이치란 도톤보리 별관","아침식사 약 40~50분","Ichiran Dotonbori Annex Osaka",34.6686,135.5034,"방문 전 해당 지점 영업시간 확인"],
+["09:00","난바 쇼핑 · 리쿠로","유니클로 · 러쉬 · 치즈케이크 약 80분","Rikuro Ojisan Namba",34.6657,135.5014,"쇼핑 시간이 늘면 오후 일정에 영향"],
+["10:30","휴먼메이드 신사이바시","PARCO 1층 · 약 35분","HUMAN MADE Shinsaibashi PARCO",34.6745,135.5012,"재고 및 입점 위치 확인"],
+["11:15","스투시 오사카","PARCO에서 도보 약 8~12분 · 쇼핑 40분","Stussy Osaka Nishishinsaibashi",34.6727,135.497,"인기 제품 사이즈·재고 확인"],
+["12:10","미즈노 오코노미야키","도보 약 15~20분 · 식사 및 대기 60~75분","Mizuno Okonomiyaki Dotonbori",34.6688,135.5026,"대기 길면 식사 장소 조정"],
+["13:35","우메다 이동 · 휴식","지하철 및 도보 약 25~35분","Osaka Umeda Station",34.703,135.497,"15시 쇼핑 시작 전 여유시간"],
+["15:00","LINKS UMEDA","Standard Products · GU · 약 45분","LINKS UMEDA",34.7045,135.497,"매장 층수 및 면세 취급 확인"],
+["15:45","그랜드 프런트 남관","DANTON · PORTER · Onitsuka Tiger · mont-bell 약 65분","Grand Front Osaka South Building",34.7041,135.4947,"층수 및 입점 여부 확인"],
+["16:55","한큐백화점 · 한큐 맨즈","비비안웨스트우드 · 약 50분","Hankyu Umeda Main Store",34.7029,135.4985,"5% 게스트 카드 적용 조건 확인"],
+["17:45","우메다 스카이빌딩 이동","도보 약 15~25분","Umeda Sky Building Osaka",34.7052,135.4902,"쇼핑 마무리 후 바로 이동"],
+["18:10","우메다 공중정원","전망대 · 야경 약 60~70분","Kuchu Teien Observatory Osaka",34.7052,135.4902,"필수 방문 · 사전 입장권 확인"],
+["19:20","닛폰바시로 이동","지하철·도보 약 35~50분","Nippombashi Station Osaka",34.6668,135.506,"스시 예약시간 고려"],
+["20:15","스시 바 이니시","저녁 · 예약 필요","Sushi Bar enishi 2-2-6 Sennichimae Osaka",34.6668,135.5041,"19시 예약이 이미 있다면 변경 필요"]
+]},
+{
+date:"11.14 토",title:"덴푸라 · 마지막 쇼핑 · 귀국",color:"#42a585",
+stops:[
+["10:00","호텔 체크아웃","짐 보관 요청","Henn na Hotel Express Osaka Namba Nipponbashi",34.6656,135.5065,"호텔 짐 보관 가능 여부 확인"],
+["11:00","덴푸라 마키노","난바 센니치마에점 · 식사 60~75분","Tempura Makino Namba Sennichimae",34.6653,135.5024,"대기시간에 따라 쇼핑 조정"],
+["12:20","난바 쇼핑 · 카페","마지막 쇼핑 약 2시간","Namba Osaka",34.6649,135.5013,"면세 영수증 및 구매품 확인"],
+["14:20","호텔 짐 수령","도보 포함 약 25~35분","Henn na Hotel Express Osaka Namba Nipponbashi",34.6656,135.5065,"짐 빠짐없이 확인"],
+["15:00","난카이 난바역 출발 목표","공항행 열차 약 40~60분","Nankai Namba Station",34.6627,135.5018,"실제 열차 출발시간 확인"],
+["16:30","간사이공항 도착 목표","19:20 에어로케이 출발","Kansai International Airport",34.4347,135.244,"세관·수하물 위탁·보안검색 시간 확보"]
+]}];
+
+const enc=encodeURIComponent;
+const loc=s=>"https://www.google.com/maps/search/?api=1&query="+enc(s);
+const directions=(a,b,mode)=>"https://www.google.com/maps/dir/?api=1&origin="+enc(a)+"&destination="+enc(b)+"&travelmode="+mode;
+const extras={
+"공중정원":"https://www.skybldg.co.jp/en/",
+"스시 바 이니시":"https://www.tablecheck.com/ko/sushi-bal-enishi",
+"휴먼메이드":"https://www.humanmade.jp/",
+"스투시":"https://kr.stussy.com/"
+};
+let maps={};
+
+document.getElementById("tabs").innerHTML=D.map((d,i)=>
+`<button class="tab ${i===0?"active":""}" onclick="showDay(${i})">${d.date}</button>`
+).join("");
+
+document.getElementById("days").innerHTML=D.map((d,i)=>`
+<section class="day ${i===0?"active":""}" id="day${i}">
+<div class="card">
+<div class="kicker">DAY 0${i+1} / ROUTE MAP</div>
+<h2>${d.title}</h2>
+<div class="map" id="map${i}"></div>
+<p class="muted">번호는 방문 순서입니다. 점선은 개략적인 연결선이며 실제 도로·지하철 노선은 아닙니다.</p>
+<div class="actions">
+<a target="_blank" href="${directions(d.stops[0][3],d.stops.at(-1)[3],"transit")}">출발지 → 도착지 길찾기 ↗</a>
+</div>
+</div>
+<div class="card">
+<div class="kicker">TIMELINE / DAILY PLAN</div>
+<h2>시간별 상세 일정</h2>
+${d.stops.map((s,j)=>{
+let key=Object.keys(extras).find(k=>s[1].includes(k));
+let mode=i===0&&j===1?"driving":i===0?"walking":"transit";
+return `<div class="stop">
+<div class="num">${j+1}</div>
+<div>
 <div class="time">${s[0]}</div>
-<b>${s[1]}</b>
-<div class="move">${s[2]}</div>
-</div></div>`).join("");
+<h3>${s[1]}</h3>
+<div class="detail">${s[2]}</div>
+<div class="actions">
+<a target="_blank" href="${loc(s[3])}">📍 위치 보기</a>
+${j>0?`<a target="_blank" href="${directions(d.stops[j-1][3],s[3],mode)}">↗ 이전 장소에서 이동</a>`:""}
+${key?`<a target="_blank" href="${extras[key]}">공식 안내 · 예약 ↗</a>`:""}
+</div>
+<div class="note">${s[6]}</div>
+</div></div>`;
+}).join("")}
+</div>
+${i===1?`<div class="card">
+<div class="kicker">ITINERARY DECISION</div>
+<h2>오사카성 일정 조정</h2>
+<p>오사카성은 이동 및 내부 관람에 약 2시간 30분이 필요해 이번 기본 동선에서는 제외했습니다.</p>
+<p class="muted">신사이바시 쇼핑, 15시 우메다 쇼핑, 공중정원 야경을 우선하는 구성입니다.</p>
+<div class="actions"><a target="_blank" href="${loc("Osaka Castle")}">오사카성 위치 보기 ↗</a></div>
+</div>`:""}
+</section>`).join("");
+
+function initMap(i){
+if(maps[i]){maps[i].invalidateSize();return}
+if(typeof L==="undefined"){
+document.getElementById("map"+i).textContent="지도 연결에 실패했습니다. 아래 길찾기 링크를 이용하세요.";
+return;
+}
+const d=D[i];
+const map=L.map("map"+i,{scrollWheelZoom:false});
+maps[i]=map;
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+attribution:"© OpenStreetMap contributors",maxZoom:19
+}).addTo(map);
+const pts=d.stops.map(s=>[s[4],s[5]]);
+L.polyline(pts,{color:d.color,weight:4,opacity:.8,dashArray:"7,7"}).addTo(map);
+d.stops.forEach((s,j)=>{
+const icon=L.divIcon({
+className:"",
+html:`<div class="pin">${j+1}</div>`,
+iconSize:[26,26],iconAnchor:[13,13]
 });
-function show(n){
-document.querySelectorAll(".day").forEach((x,i)=>x.classList.toggle("active",i===n));
-document.querySelectorAll(".tabs button").forEach((x,i)=>x.classList.toggle("active",i===n));
+L.marker([s[4],s[5]],{icon}).bindPopup(`<b>${j+1}. ${s[1]}</b><br>${s[0]}`).addTo(map);
+});
+map.fitBounds(pts,{padding:[30,30],maxZoom:14});
+}
+function showDay(i){
+document.querySelectorAll(".day").forEach((e,j)=>e.classList.toggle("active",i===j));
+document.querySelectorAll(".tab").forEach((e,j)=>e.classList.toggle("active",i===j));
+setTimeout(()=>initMap(i),60);
 window.scrollTo({top:0,behavior:"smooth"});
 }
-const items=["여권 · 항공권 확인","호텔 짐 수령","공항행 열차 시간 확인","귀국편 터미널 확인","면세 구매품 · 영수증 준비","세관 및 환급 절차 확인","수하물 위탁","보안검색 · 출국심사"];
-items.forEach((s,i)=>{
-const l=document.createElement("label");
-l.className="check";
-const c=document.createElement("input");
-c.type="checkbox";
-c.checked=localStorage.getItem("tripcheck"+i)==="1";
-c.onchange=()=>localStorage.setItem("tripcheck"+i,c.checked?"1":"0");
-l.append(c,document.createTextNode(" "+s));
-document.getElementById("checks").append(l);
+initMap(0);
+
+const tasks=[
+"INNN 공항 픽업 미팅 위치 확인",
+"야키니쿠 하나미치 영업시간 확인",
+"스투시·휴먼메이드 매장 확인",
+"우메다 공중정원 입장권 확인",
+"스시 바 이니시 저녁 예약",
+"한큐 게스트 카드·면세 조건 확인",
+"호텔 체크아웃 후 짐 보관 확인",
+"난카이 공항행 열차 시간 확인",
+"여권·항공권·면세 영수증 준비",
+"수하물 위탁 전 세관 확인",
+"에어로케이 출발 터미널·체크인 마감 확인"
+];
+document.getElementById("checks").innerHTML=tasks.map((t,i)=>
+`<label class="check"><input type="checkbox" data-i="${i}"><span>${t}</span></label>`
+).join("");
+document.querySelectorAll("[data-i]").forEach(el=>{
+let k="osaka2026-"+el.dataset.i;
+el.checked=localStorage.getItem(k)==="1";
+el.onchange=()=>localStorage.setItem(k,el.checked?"1":"0");
 });
 </script>
 </body>
