@@ -16,16 +16,18 @@ body{font-size:14px;line-height:1.55}
 .hero .overline{margin-top:27px;color:#d4e0da;letter-spacing:0;font-size:12px;font-weight:600}
 .hero h1{font-size:clamp(30px,6vw,42px);letter-spacing:-.055em;line-height:1.2;margin:5px 0}
 .hero-copy{color:#e2e9e5;font-size:13px}
-.trip-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:22px;padding:15px 0 0;border-top:1px solid var(--line)}
-.trip-facts div{padding:0 14px;border:0;border-left:1px solid #ffffff52}.trip-facts div:first-child{padding-left:0;border-left:0}
-.trip-facts span{font-size:11px;color:#d1ddd7}.trip-facts strong{font-size:12px;color:#fff}
+.trip-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:19px;padding:0;border:0}
+.flight-fact{min-width:0;padding:11px 13px;border:1px solid #ffffff3b;border-radius:12px;background:#0c211c66;backdrop-filter:blur(5px)}
+.flight-fact span,.flight-fact strong,.flight-fact small{display:block}.flight-fact span{font-size:10px;color:#d1ddd7;margin-bottom:4px}.flight-fact strong{font-size:12px;color:#fff;line-height:1.4}.flight-fact small{font-size:10px;color:#e0e8e3;line-height:1.45;margin-top:3px}
+.flight-footnote{font-size:9px;color:#e0e8e3;margin:8px 0 0}.flight-footnote a{color:#fff;text-underline-offset:2px}
+.hotel-line{font-size:10px;color:#eff4f1;margin:5px 0 0}
 main{padding-top:16px}.card{border-color:var(--line);border-radius:16px;box-shadow:none;padding:19px}
 .eyebrow{letter-spacing:0;font-size:11px;color:#7b838d;font-weight:600}
 .section-heading h2{font-size:18px;letter-spacing:-.035em}.pill{background:#f4f5f7;color:#515963}
 .overview-grid{gap:8px;margin-top:14px}.overview-day{min-height:112px;border-radius:12px;padding:12px;background:#fff}
 .overview-day strong{font-size:13px;letter-spacing:-.02em}.overview-day small{font-size:10px;line-height:1.45}
 .day-tabs{border:0;border-bottom:1px solid var(--line);border-radius:0;background:rgba(245,246,248,.96);padding:6px 0;gap:8px}
-.day-tab{border-radius:10px}.day-tab[aria-selected=true]{background:#20252b;box-shadow:none}
+.day-tab{border-radius:10px;transition:background .2s,color .2s,transform .2s}.day-tab[aria-selected=true]{background:#20252b;box-shadow:none;transform:translateY(-1px)}
 .day-title-row{margin:16px 3px 10px}.day-title-row h2{font-size:21px;letter-spacing:-.04em}
 .day-theme{font-size:11px;font-weight:600}.map-card{padding:16px}.map-head{margin-bottom:10px}.map-head h3{font-size:14px}.map-head p{font-size:10px}
 .route-map{height:clamp(190px,45vw,270px);border-radius:12px}.leaflet-control-attribution{font-size:8px!important}.leaflet-control-zoom a{color:#303740!important}
@@ -35,7 +37,9 @@ main{padding-top:16px}.card{border-color:var(--line);border-radius:16px;box-shad
 .stop h4{font-size:13px}.stop-desc{font-size:10px}.stop-time{font-size:10px}.place-links{gap:5px;margin-top:7px}.route-summary{padding:10px;border-radius:10px;font-size:10px}
 .stop-warning{display:inline-block;margin-top:6px;color:#a1492d;background:#fff3ed;border-radius:7px;padding:3px 7px;font-size:10px;font-weight:700}
 .stop-note{margin-top:7px;color:#6b737d;font-size:10px}.stop-note summary{width:max-content;cursor:pointer;font-weight:600;color:#69717c}.stop-note p{margin:6px 0 0;line-height:1.55}
+.stop{animation:stopRise .36s both;animation-delay:calc(var(--stop-index,0) * 22ms)}.stop-body,.stop-number{transition:background .2s,color .2s,box-shadow .2s}.day-extra{animation:extraIn .3s ease both}.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}.quick-grid div{padding:12px;border-radius:11px;background:#f6f7f8}.quick-grid span,.quick-grid strong{display:block}.quick-grid span{font-size:10px;color:var(--sub)}.quick-grid strong{font-size:12px;line-height:1.45;margin-top:4px}.inline-alert{margin:12px 0 0;padding:11px 13px;border-radius:10px;background:#fff5ef;color:#734431;font-size:11px}.inline-alert strong{margin-right:6px}
 .decision-card{background:#fff}.decision-card .decision-badge{font-weight:600}
 .notice{border:1px solid var(--line);background:#fafbfc}.check-item{padding:11px 0}.check-item span{font-size:11px}
 footer{font-size:10px}
-@media(max-width:540px){.shell{width:min(100% - 28px,1000px)}.hero{padding:18px 0 20px}.hero .overline{margin-top:22px}.hero h1{font-size:34px}.trip-facts{gap:0;margin-top:17px}.trip-facts div{padding:0 8px}.trip-facts strong{font-size:10px}.card{padding:16px;border-radius:15px}.overview-grid{gap:6px}.overview-day{min-height:110px;padding:10px 8px}.overview-day strong{font-size:11px}.overview-day small{font-size:9px}.route-map{height:210px}.weather-note{max-width:132px}.map-links a{flex:1;justify-content:center}}
+@keyframes stopRise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}@keyframes extraIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:540px){.shell{width:min(100% - 28px,1000px)}.hero{padding:18px 0 20px}.hero .overline{margin-top:22px}.hero h1{font-size:34px}.trip-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:15px}.flight-fact{padding:9px 8px;border-radius:10px}.flight-fact span{font-size:9px}.flight-fact strong{font-size:10px}.flight-fact small{font-size:9px}.hotel-line{font-size:9px}.flight-footnote{font-size:8px}.card{padding:16px;border-radius:15px}.overview-grid{gap:6px}.overview-day{min-height:110px;padding:10px 8px}.overview-day strong{font-size:11px}.overview-day small{font-size:9px}.route-map{height:210px}.weather-note{max-width:132px}.map-links a{flex:1;justify-content:center}.quick-grid{grid-template-columns:1fr;gap:6px}.quick-grid div{padding:9px 11px;display:grid;grid-template-columns:108px 1fr;align-items:center}.quick-grid strong{margin:0;font-size:11px}.inline-alert{font-size:10px}}

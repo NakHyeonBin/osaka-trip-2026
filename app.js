@@ -87,14 +87,30 @@ function renderTimeline(day,index){
     const prev = j ? day.stops[j-1].search : null;
     const routeQuery = s.nextSearch || s.search;
     const move = s.mode ? `<div class="leg"><span class="leg-mode">${s.mode}</span><span>이전 장소에서 ${s.duration || "이동"}</span></div>` : "";
-    return `<article class="stop ${j===selectedStop?"active":""}" data-stop="${j}" tabindex="0" role="button" aria-label="지도에서 ${s.name} 선택"><div class="stop-number">${j+1}</div><div class="stop-body"><div class="stop-top"><div><h4>${s.name}</h4><p class="stop-desc">${s.detail}</p>${s.warning?'<span class="stop-warning">예약 시간 확인 필요</span>':""}</div><span class="stop-time">${s.time}</span></div>${move}<div class="place-links">${locationLinks(routeQuery,s.noRoute?null:prev,s.mode,s.official)}</div>${s.note?`<details class="stop-note"><summary>안내</summary><p>${s.note}</p></details>`:""}</div></article>`;
+    return `<article class="stop ${j===selectedStop?"active":""}" data-stop="${j}" style="--stop-index:${j}" tabindex="0" role="button" aria-label="지도에서 ${s.name} 선택"><div class="stop-number">${j+1}</div><div class="stop-body"><div class="stop-top"><div><h4>${s.name}</h4><p class="stop-desc">${s.detail}</p>${s.warning?'<span class="stop-warning">예약 시간 확인 필요</span>':""}</div><span class="stop-time">${s.time}</span></div>${move}<div class="place-links">${locationLinks(routeQuery,s.noRoute?null:prev,s.mode,s.official)}</div>${s.note?`<details class="stop-note"><summary>안내</summary><p>${s.note}</p></details>`:""}</div></article>`;
   }).join("");
   return `<section class="card timeline-card"><p class="eyebrow">${day.date}</p><h3>시간별 일정</h3>${rows}<div class="route-summary"><strong>동선</strong><span>${day.summary}</span></div></section>`;
+}
+function renderDayExtra(){
+  const extra=document.querySelector("#day-extra");
+  if(activeDay===0){
+    extra.innerHTML=`<section class="card day-extra arrival-extra"><div class="section-heading"><div><p class="eyebrow">11월 12일 · 도착일</p><h2>예약 확인</h2></div><span class="pill">저녁 20:45</span></div><div class="quick-grid"><div><span>공항 차량</span><strong>INNN · 18:00 예약</strong></div><div><span>저녁</span><strong>야키니쿠 예약 완료</strong></div></div><p class="inline-alert"><strong>시각 확인</strong> 항공편은 18:30 간사이 도착 예정으로, 차량 예약보다 30분 늦습니다. 바우처의 미팅 시각과 대기 조건을 확인하세요.</p></section>`;
+  }else if(activeDay===1){
+    extra.innerHTML=`<section class="card shopping-card day-extra"><div class="section-heading"><div><p class="eyebrow">11월 13일 · 우메다</p><h2>쇼핑 위치</h2></div><span class="pill">매장별 층</span></div><div class="shop-groups">
+      <article><span class="shop-icon">01</span><div><h3>LINKS UMEDA</h3><p>GU <small>3F · 10:00–21:00(점포 안내 기준)</small></p></div><a class="text-link" href="https://links-umeda.jp/shop/gu%E3%80%80links-umeda/" target="_blank" rel="noopener">매장 안내 ↗</a></article>
+      <article><span class="shop-icon">02</span><div><h3>그랜드 프런트 오사카 남관</h3><p>DANTON(Bshop) · PORTER · mont-bell <small>Bshop·PORTER 3F / mont-bell 5F · 대부분 11:00–21:00</small></p></div><a class="text-link" href="https://www.gfo-sc.jp/shop/list/" target="_blank" rel="noopener">매장 목록 ↗</a></article>
+      <article><span class="shop-icon">03</span><div><h3>EST 우메다 · NU 차야마치</h3><p>Standard Products · Onitsuka Tiger <small>EST 2F / NU 차야마치 1F · 11:00–21:00</small></p></div><a class="text-link" href="https://www.est-sc.com/shop_guide/index.php?c=shop_guide_view&pk=16165531160096" target="_blank" rel="noopener">층 안내 ↗</a></article>
+      <article><span class="shop-icon">04</span><div><h3>한큐 본점 · 한큐 맨즈</h3><p>Vivienne Westwood <small>본점 3F · 영업시간은 당일 공지 확인</small></p></div><a class="text-link" href="https://website.hankyu-dept.co.jp/fl/english/honten/service/" target="_blank" rel="noopener">쿠폰 조건 ↗</a></article>
+    </div><div class="notice"><strong>면세·게스트 쿠폰</strong><p>2026년 11월부터 면세 환급 방식이 바뀝니다. 한큐 쿠폰은 면세 자격·여권 제시와 브랜드별 제외 조건이 있으니 결제 전에 확인하세요.</p><a href="https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00019.html" target="_blank" rel="noopener">일본 관광청 안내 ↗</a><a href="https://website.hankyu-dept.co.jp/fl/english/honten/service/" target="_blank" rel="noopener">한큐 쿠폰 조건 ↗</a></div></section>`;
+  }else{
+    extra.innerHTML=`<section class="card day-extra departure-extra"><div class="section-heading"><div><p class="eyebrow">11월 14일 · 귀국일</p><h2>공항 이동</h2></div><span class="pill">19:20 출발</span></div><div class="quick-grid"><div><span>호텔 픽업</span><strong>INNN 예약 차량 · 14:00 전후</strong></div><div><span>공항 도착 목표</span><strong>16:30까지 · 간사이 T1</strong></div><div><span>귀국편</span><strong>RF317 · 청주 21:05 도착 예정</strong></div></div><p class="small-note">차량 픽업 시각은 INNN 바우처를 우선 확인하세요. 항공편 체크인·수하물 마감 시각도 출발 전에 확인해 주세요.</p></section>`;
+  }
 }
 function renderDay(){
   const day=tripDays[activeDay];
   const panel=document.querySelector("#day-content");
   panel.innerHTML=`<section class="day-panel" id="panel-${activeDay}" role="tabpanel" aria-labelledby="tab-${activeDay}" style="--day-color:${day.color};--day-soft:${day.soft}"><div class="day-title-row"><div><span class="day-theme">${day.short} · ${day.theme}</span><h2>${day.title}</h2></div><span class="weather-note">${day.weather}</span></div>${mapShell(day,activeDay)}${renderTimeline(day,activeDay)}${day.decision?`<section class="card decision-card"><div class="section-heading"><div><p class="eyebrow">일정 참고</p><h2>오사카성</h2></div><span class="decision-badge">이번 일정에서 제외</span></div><p>${day.decision}</p><p class="note-line">추가하려면 우메다 쇼핑이나 저녁 식사를 줄여야 합니다. 둘째 날은 이동·대기 변수가 커 여유 시간이 많지 않습니다.</p><p class="note-line">쇼핑은 4개 상권에 7개 브랜드를 배치해 매장별 체류 시간이 짧습니다. 구매 우선순위를 정하고, 미즈노 대기가 길어지면 매장을 조정하세요.</p><div class="place-links"><a href="${googleSearch("오사카성")}" target="_blank" rel="noopener">오사카성 지도 ↗</a></div></section>`:""}</section>`;
+  renderDayExtra();
   panel.querySelectorAll("[data-stop]").forEach(row=>{
     const select=()=>selectStop(Number(row.dataset.stop));
     row.addEventListener("click",e=>{if(e.target.closest("a"))return;select();});

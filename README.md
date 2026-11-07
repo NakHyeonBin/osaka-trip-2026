@@ -16,6 +16,8 @@ The map shows a small number of area anchors and connects them with a dashed seq
 
 The arrival pickup and departure ride with INNN are marked as booked by the traveler. The first pickup is listed at 18:00, while the flight is scheduled to land at 18:30; confirm the actual airport meeting time and wait policy with INNN. The first-night yakiniku reservation is at 20:45; the restaurant name and address are not present in the itinerary source, so the page asks the traveler to check the reservation confirmation.
 
+The flight summary uses the published timetable matching the supplied Kansai arrival/departure times: Aero K RF318, CJJ 16:40 → KIX 18:30 on Nov 12; Aero K RF317, KIX 19:20 → CJJ 21:05 on Nov 14. The traveler’s ticket confirmation takes precedence if its times differ. Flight timing references: [CJJ–KIX schedule](https://www.directflights.com/CJJ-KIX) and [RF317 schedule](https://www.flight.info/RF317).
+
 ## Sources checked for this itinerary
 
 - [Japan Tourism Agency tax-free refund method](https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00019.html)
