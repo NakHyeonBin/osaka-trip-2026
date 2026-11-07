@@ -10,9 +10,11 @@ Static, mobile-first itinerary for 12–14 November 2026. GitHub Pages serves th
 
 ## Local preview
 
-Open `index.html` directly or serve the repository root with any static HTTP server. The map uses Leaflet and OpenStreetMap tiles; when the map CDN or tiles are unavailable, Korean map links remain available from every stop.
+Open `index.html` directly or serve the repository root with any static HTTP server. The map uses Leaflet and CARTO light tiles; when the map CDN or tiles are unavailable, Google Maps links remain available from every stop.
 
-The dashed line joins stop coordinates to show sequence, not a road, rail alignment, or measured route. The per-leg links open actual walking, transit, or driving directions in Google Maps; Naver Map and Kakao Map search links are included for Korean-language mobile map use.
+The map shows a small number of area anchors and connects them with a dashed sequence line. The line is not a road or rail route. Per-leg links open Google Maps walking, transit, or driving directions. Naver Map and Kakao Map search links were removed after checking Osaka searches: both kept the map centered in Korea and returned no matching Osaka business results in the tested browser.
+
+The arrival pickup and departure ride with INNN are marked as booked by the traveler. The first pickup is listed at 18:00, while the flight is scheduled to land at 18:30; confirm the actual airport meeting time and wait policy with INNN. The first-night yakiniku reservation is at 20:45; the restaurant name and address are not present in the itinerary source, so the page asks the traveler to check the reservation confirmation.
 
 ## Sources checked for this itinerary
 
@@ -31,6 +33,5 @@ The dashed line joins stop coordinates to show sequence, not a road, rail alignm
 - [Okonomiyaki Mizuno](https://www.mizuno-osaka.com/index2.html)
 - [Sushi Bar enishi Namba, Korean TableCheck](https://www.tablecheck.com/ko/sushi-bal-enishi)
 - [Tempura Makino Namba Sennichimae, official LINE account](https://page.line.me/501ogpxn)
-- [Nankai timetable](https://www.nankai.co.jp/traffic/railway/timetable.html)
 
 Schedules are estimates. Recheck store notices, travel time, queue length, inventory, reservations, and airport instructions shortly before the trip.
